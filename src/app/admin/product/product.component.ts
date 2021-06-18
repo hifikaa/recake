@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ApiService } from 'src/app/services/api.service';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 
 
@@ -13,7 +14,8 @@ export class ProductComponent implements OnInit {
   book:any={};
   books:any=[];
   constructor(
-    public dialog:MatDialog
+    public dialog:MatDialog,
+    public api:ApiService
   ) {
 
   }
@@ -27,21 +29,17 @@ export class ProductComponent implements OnInit {
     };
     this.getBooks();
   } 
-
+  loading:boolean | undefined;
   getBooks()
   {
-    this.books=[
-      {
-        title:'resep kue nastar',
-        author:'via',
-        year:'2021'
-      },
-      {
-        title:'resep kue kastangel',
-        author:'via',
-        year:'2021'
-      }
-    ];
+    this.loading=true;
+    this.api.get('books').subscribe(result=>{
+      this.books=result;
+      this.loading=false;
+    },error=>{
+      this.loading=false;
+      alert('Ada masalah saat pengambilan data. Coba lagi nanti!');
+    })
   }
 
   productDetail(data: any,idx: any)
@@ -56,15 +54,26 @@ export class ProductComponent implements OnInit {
         //jika idx=-1 (penambahan data baru) maka tambahkan data
        if(idx==-1)this.books.push(res);      
         //jika tidak maka perbarui data  
-       else this.books[idx]=res; 
+       else this.books[idx]=data; 
      }
    })
  }
- deleteProduct(idx: any)
+
+ loadingDelete:any={};
+ deleteProduct(id: any, idx: any)
  {
-  var conf=confirm('Delete item?');
+   var conf=confirm('Delete item?');
    if(conf)
-   this.books.splice(idx,1);
+   {
+    this.loadingDelete[idx]=true;
+     this.api.delete('books/'+id).subscribe(res=>{
+      this.books.splice(idx,1);
+      this.loadingDelete[idx]=false;
+     },error=>{
+       this.loadingDelete[idx]=false;
+       alert('Tidak dapat menghapus data');
+     });
+   }
  }
    
 }
