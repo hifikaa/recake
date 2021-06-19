@@ -12,7 +12,7 @@
             <button mat-flat-button color="primary" (click)="productDetail({},-1)">Tambah Resep</button>
         </div>
         <table class="uk-table uk-table-middle uk-table-divider">
-            <thead>                
+            <thead>
                 <th>No</th>
                 <th>Judul</th>
                 <th>Penulis</th>
@@ -26,12 +26,12 @@
                     <td>{{book.author}}</td>
                     <td>{{book.year}}</td>
                     <td align="right">
-                        <button mat-button color="primary" (click)="productDetail(book,idx)" >Edit</button>
-                        <button mat-button color="warn" (click)="deleteProduct(book.id, idx)" [disabled]="loadingDelete">{{loadingDelete[idx] ? 'Menghapus..':'Delete'</button>
+                        <button mat-button color="primary" (click)="productDetail(book,idx)">Edit</button>
+                        <button mat-button color="warn" (click)="deleteProduct(book.id, idx)"
+                            [disabled]="loadingDelete[idx]">{{loadingDelete[idx] ? 'Menghapus..':'Delete'}}</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </mat-card-content>
 </mat-card>
-
