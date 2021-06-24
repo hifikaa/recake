@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 
 
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -17,7 +18,8 @@ export class ProductComponent implements OnInit {
     public dialog:MatDialog,
     public api:ApiService
   ) {
-
+    this.title = 'Products';
+    this.getBooks();
   }
 
   ngOnInit(): void {
@@ -29,9 +31,17 @@ export class ProductComponent implements OnInit {
     };
     this.getBooks();
   } 
-  loading:boolean | undefined;
+  loading:boolean= false;
   getBooks()
   {
+    this.loading=true;
+    this.api.get('bookswithauth').subscribe(result=>{
+      this.books=result;
+      this.loading=false;
+    },error=>{
+      this.loading=false;
+    })
+    /*
     this.loading=true;
     this.api.get('books').subscribe(result=>{
       this.books=result;
@@ -40,6 +50,7 @@ export class ProductComponent implements OnInit {
       this.loading=false;
       alert('Ada masalah saat pengambilan data. Coba lagi nanti!');
     })
+    */
   }
 
   productDetail(data: any,idx: any)
