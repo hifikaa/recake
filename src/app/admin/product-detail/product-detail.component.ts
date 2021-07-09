@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
+
   constructor(
     public dialogRef: MatDialogRef<ProductDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -28,7 +29,7 @@ export class ProductDetailComponent implements OnInit {
       this.loading=false;
     },error=>{
       this.loading=false;
-      alert('Tidak dapat menyyimpan data');
+      alert('Tidak dapat menyimpan data');
     });
   }else{
     this.api.put('books/'+this.data.id,this.data).subscribe(result=>{
@@ -39,6 +40,8 @@ export class ProductDetailComponent implements OnInit {
       alert('Tidak dapat memperbarui data');
     })
   }
+
+  
 }
 
 }

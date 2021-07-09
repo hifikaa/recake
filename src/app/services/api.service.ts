@@ -46,8 +46,6 @@ export class ApiService {
     this.getToken();
     return this.http.delete(this.serverUrl+url,this.httpOptions);
   }
-
-  
   //register
   register(email: any,password: any)
   {
@@ -58,4 +56,11 @@ export class ApiService {
   {
     return this.http.post(this.serverUrl+'auth/login',{email:email,password:password});
   }
+
+  //upload
+  upload(file: any)
+  {
+    return this.http.post(this.serverUrl+'upload/book',file);
+  }
+  
 }
