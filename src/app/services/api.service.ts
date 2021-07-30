@@ -4,8 +4,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+  
 export class ApiService {
-  serverUrl:any='http://api.sunhouse.co.id/bookstore/index.php/';
+  serverUrl:any='';
   constructor(
     public http:HttpClient
   ) { }
@@ -64,3 +65,7 @@ export class ApiService {
   }
   
 }
+
+
+
+

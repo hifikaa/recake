@@ -9,7 +9,7 @@
     <mat-card-content>
         <div class="uk-flex">
             <span class="uk-width-expand"></span>
-            <button mat-flat-button color="primary" (click)="productDetail({},-1)">Tambah Resep</button>
+            <button mat-flat-button color="primary" (click)="productDetail({},-1)">Tambah Penulis</button>
         </div>
         <table class="uk-table uk-table-middle uk-table-divider">
             <thead>
@@ -23,8 +23,8 @@
             <tbody>
                 <tr *ngFor="let book of books; let idx=index">
                     <td>
-                        <button mat-icon-button *ngIf="book.url != ''" (click)="downloadFile(book)">
-                            <mat-icon>download</mat-icon>
+                        <button mat-icon-button *ngIf="book.url != ''">
+                            
                         </button>
                     </td> 
                     <td>{{idx+1}}</td>
@@ -32,7 +32,7 @@
                     <td>{{book.author}}</td>
                     <td>{{book.year}}</td>
                     <td align="right">
-                        <button mat-button color="primary" (click)="uploadFile(book)">Upload Doc</button>
+                
                         <button mat-button color="primary" (click)="productDetail(book,idx)">Edit</button>
                         <button mat-button color="warn" (click)="deleteProduct(book.id,idx)" [disabled]="loadingDelete[idx]">{{loadingDelete[idx] ? 'Menghapus..':'Delete'}}</button>
                     </td>

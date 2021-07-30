@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "recake-8ece0": {
+      "hosting": {
+        "myRecake": [
+          "recake-8ece0"
+        ]
+      }
+    }
+  }
+}

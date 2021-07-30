@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import * as FileSaver from 'file-saver';
 import { ApiService } from '../../services/api.service';
@@ -12,29 +14,39 @@ import { ProductDetailComponent } from '../product-detail/product-detail.compone
 })
 export class ProductComponent implements OnInit {
   title:any;
-  book:any={};
   books:any=[];
+  userData: any = {};
   constructor(
     public dialog:MatDialog,
-    public api:ApiService
+    public api:ApiService,
+    public db: AngularFirestore,
+    public auth: AngularFireAuth
   ) {
-    this.title = 'Resep Kue';
-    this.getBooks();
+    
   }
 
   ngOnInit(): void {
-    
+    this.title = 'Daftar Resep Kue';
+    this.auth.user.subscribe(user=>{
+      this.userData = user;
+      this.getBooks();
+    });
   } 
+
+
+
   loading: boolean = false;
   getBooks()
   {
     this.loading=true;
-    this.api.get('books').subscribe(result=>{
-      this.books=result;
+    this.db.collection('books',ref=>{
+      return ref.where('uid','==', this.userData.uid);
+    }).valueChanges({idField : 'id'}).subscribe(res=>{
+      console.log(res);
+      this.books=res;
       this.loading=false;
-    },error=>{
+    },err=>{
       this.loading=false;
-      alert('Tidak dapat mengambil data');
     })
   }
 
@@ -45,13 +57,7 @@ export class ProductComponent implements OnInit {
      data:data
    });
    dialog.afterClosed().subscribe(res=>{
-     if(res)
-     {
-        //jika idx=-1 (penambahan data baru) maka tambahkan data
-       if(idx==-1)this.books.push(res);      
-        //jika tidak maka perbarui data  
-       else this.books[idx]=data; 
-     }
+    return;
    })
  }
 
@@ -62,15 +68,15 @@ export class ProductComponent implements OnInit {
    var conf=confirm('Delete item?');
    if(conf)
    {
-    this.loadingDelete[idx]=true;
-     this.api.delete('books/'+ this.books[idx].id).subscribe(res=>{
+    this.db.collection('books').doc(id).delete().then(res=>{
       this.books.splice(idx,1);
+      this.loadingDelete[idx]=false; 
+    }).catch(err=>{
       this.loadingDelete[idx]=false;
-     },error=>{
-       this.loadingDelete[idx]=false;
        alert('Tidak dapat menghapus data');
-     });
+    });
    }
+
  }
    
 uploadFile(data: any)

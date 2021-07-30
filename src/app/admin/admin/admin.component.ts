@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,26 +8,13 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class AdminComponent implements OnInit {
 
+  loading:boolean=true;
   constructor(
-    public router: Router,
-    public api: ApiService
+    public router: Router
   ) { }
 
   ngOnInit(): void {
-    this.checkLogin();
-  }
-
-  mode:string='side';
-
-  checkLogin()
-  {
-    this.api.get('bookswithauth/status').subscribe(res=>{
-      //is logged in
-      return;
-    },err=>{
-      //not logged in
-      this.router.navigate(['/login']);
-    })
+   
   }
 
   logout()
@@ -37,7 +23,7 @@ export class AdminComponent implements OnInit {
     if(conf)
     {
       localStorage.removeItem('appToken');
-      window.location.reload();
+      this.router.navigate(['/login']);
     }
   }
 }
